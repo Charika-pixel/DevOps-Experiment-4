@@ -1,0 +1,39 @@
+Commands:
+ansible --version
+
+# hosts.ini
+localhost ansible_connection=local
+
+ansible-inventory -i hosts.ini --list
+ansible-playbook -i hosts.ini setup.yml
+
+
+Sample File:
+---
+- name: Simple Ansible Automation
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    project_dir: "/tmp/devops_lab"
+    message: "Ansible automation completed"
+
+  tasks:
+    - name: Create project directory
+      ansible.builtin.file:
+        path: "{{ project_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Create message file
+      ansible.builtin.copy:
+        content: "{{ message }}
+"
+        dest: "{{ project_dir }}/message.txt"
+        mode: "0644"
+
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg: "{{ message }}
+
